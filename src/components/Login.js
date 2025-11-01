@@ -1,8 +1,8 @@
-import { Button, FormControl, Grid, IconButton, InputAdornment, InputLabel, LinearProgress, OutlinedInput, Paper, Stack, TextField, Typography } from '@mui/material';
+import { Button, IconButton, InputAdornment, LinearProgress, Paper, Stack, TextField, Typography } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import debounce from '../utils/debouce';
+import useDebounced from '../utils/debouce';
 import { useNewsContext } from '../context/NewsContext';
 
 const Login = () => {
@@ -13,7 +13,6 @@ const Login = () => {
     const [error, setError] = useState(false);
     const [helperText, setHelperText] = useState('');
     const [loginDisable, setLoginDisable] = useState(true);
-    const handleButtonDisable = useRef();
     const navigate = useNavigate();
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -32,82 +31,74 @@ const Login = () => {
         setLoading(false);
     };
 
-    useEffect(() => {
-        //error and login button handler. Wait 300ms before handling
-        handleButtonDisable.current = debounce((name, password) => {
-            setHelperText('');
-            setError(false);
-            if (name !== '' && password !== '') {
-                setLoginDisable(false);
-            } else {
-                setLoginDisable(true);
-            }
-        }, 300);
-
-        //cleanup on unmount
-        return () => {
-            handleButtonDisable.current.cancel?.();
-        };
-    }, []);
+    const resetLoginError = useDebounced((name, pw) => {
+        setHelperText('');
+        setError(false);
+        if (name !== '' && pw !== '') {
+            setLoginDisable(false);
+        } else {
+            setLoginDisable(true);
+        }
+    }, 300);
 
     useEffect(() => {
-        handleButtonDisable.current?.(username, password);
+        resetLoginError(username, password);
     }, [username, password]);
 
     return user !== '' ?
         <Navigate to='/home'></Navigate>
         : (
-            <Grid container spacing={8} direction='column' sx={{
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
-                {loading && <LinearProgress />}
-                <Typography fontSize='42px' paddingTop={12} fontFamily='Paytone One'>mydailyNEWS</Typography>
-                <Grid size={{ xs: 6, md: 3.5 }} pb='20px'>
-                    <Paper sx={{ padding: '40px 20px' }} elevation={5}>
-                        <Stack spacing={1.5} component='form' onSubmit={login}>
-                            <Typography variant='h5' paddingBottom={2}>Log into your account</Typography>
+            <>
+                {loading && 
+                <LinearProgress sx={{
+                    position: 'fixed',
+                    width: '100%',
+                    top: 0,
+                    zIndex: 1100,
+                }} />
+                }
+                <Stack sx={{ justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+                    <Typography fontSize='42px' padding='40px 0' fontFamily='Paytone One'>mydailyNEWS</Typography>
+                    <Paper sx={{ padding: '40px 20px', mb: '20px' }} elevation={5}>
+                        <Stack spacing={2} component='form' onSubmit={login}>
+                            <Typography variant='h5' pb={2}>Log into your account</Typography>
                             <TextField
                                 autoFocus
                                 label='Username'
-                                variant='outlined'
                                 error={error}
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                             />
-                            <FormControl variant='outlined'>
-                                <InputLabel htmlFor='outlined-adornment-password' error={error}>Password</InputLabel>
-                                <OutlinedInput
-                                    id='outlined-adornment-password'
-                                    endAdornment={
-                                        <InputAdornment position='end'>
-                                            <IconButton
-                                                onClick={handleClickShowPassword}
-                                                onMouseDown={(e) => {
-                                                    e.preventDefault();
-                                                }}
-                                                onMouseUp={(e) => {
-                                                    e.preventDefault();
-                                                }}
-                                            >
-                                                {showPassword ? <Visibility /> : <VisibilityOff />}
-                                            </IconButton>
-                                        </InputAdornment>
+                            <TextField
+                                type={showPassword ? 'text' : 'password'}
+                                label='Password'
+                                error={error}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                slotProps={{
+                                    input: {
+                                        endAdornment:
+                                            <InputAdornment position='end'>
+                                                <IconButton
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={(e) => {
+                                                        e.preventDefault();
+                                                    }}
+                                                >
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
                                     }
-                                    type={showPassword ? 'text' : 'password'}
-                                    error={error}
-                                    label='Password'
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
-                            </FormControl>
-                            <Typography fontSize='14px' color='error'>{helperText}</Typography>
-                            <Button disabled={loginDisable} type='submit' variant='contained' color='secondary'>
+                                }}
+                            />
+                            {error&&<Typography fontSize='14px' color='error'>{helperText}</Typography>}
+                            <Button disabled={loginDisable} type='submit' variant='contained'>
                                 Login
                             </Button>
                         </Stack>
                     </Paper>
-                </Grid>
-            </Grid>);
+                </Stack>
+            </>);
 };
 
 export default Login;

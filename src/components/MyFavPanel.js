@@ -14,11 +14,11 @@ const MyFavPanel = () => {
                     position: 'sticky',
                     top: '64px',
                     zIndex: 1100,
-                    bgcolor: 'rgb(17, 17, 47)',
+                    bgcolor: 'secondary.main',
                     display: 'flex',
                     justifyContent: 'flex-end'
                 }}>
-                <Button sx={{ color: 'secondary.light' }} onClick={handleClear}>Clear ({fav.length})</Button>
+                <Button onClick={handleClear}>Clear ({fav.length})</Button>
             </Box>
             <Box
                 sx={{
@@ -41,30 +41,22 @@ const MyFavPanel = () => {
 export default MyFavPanel;
 
 const FavItem = ({ news }) => {
-    const { fav, addNewsToFav, removeNewsFromFav } = useNewsContext();
-    const newsInFav = fav.some(e => e.title === news.title);
+    const { removeNewsFromFav } = useNewsContext();
     const handleClick = () => {
-        newsInFav ?
-            removeNewsFromFav(news.title)
-            : addNewsToFav(news);
+            removeNewsFromFav(news.title);
     };
     return (
         <Card size={12}>
-            <Link href={news.url} target='_blank' rel='noreferrer' underline='none' color='black'>
+            <Link href={news.url} target='_blank' rel='noreferrer' underline='none' color='inherit'>
                 <CardContent>
                     <Typography variant='body2'>
                         {news.title}
                     </Typography>
                 </CardContent>
             </Link>
-            {newsInFav ?
-                <IconButton color='error' onClick={handleClick}>
-                    <FavoriteIcon />
-                </IconButton>
-                : <IconButton onClick={handleClick}>
-                    <FavoriteIcon />
-                </IconButton>
-            }
+            <IconButton color='error' onClick={handleClick}>
+                <FavoriteIcon />
+            </IconButton>
         </Card>
     );
 };

@@ -1,14 +1,19 @@
-//debounce the function so it is not executed repeatedly in quick succession
-export default function debounce(func, delay) {
-    let timer;
-    const debounced = (...args) => {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            func.apply(this, args);
-        }, delay);
+import { useEffect, useRef } from 'react';
+
+const useDebounced = (callback, delay) => {
+    const timerRef = useRef();
+
+    //cleanup on unmount
+    useEffect(() => {
+        return () => clearTimeout(timerRef.current);
+    }, []);
+
+    const debounce = (...args) => {
+        clearTimeout(timerRef.current);
+        timerRef.current = setTimeout(() => callback(...args), delay);
     };
 
-    //cancel on unmount
-    debounced.cancel = () => clearTimeout(timer);
-    return debounced;
-}
+    return debounce;
+};
+
+export default useDebounced;

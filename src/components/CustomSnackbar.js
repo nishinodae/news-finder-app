@@ -7,17 +7,10 @@ const CustomSnackbar = () => {
     return errorMessage === '' ?
         <Snackbar open={true} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
             <SnackbarContent
-                sx={{ bgcolor: 'secondary.main'}}
+                sx={{ bgcolor: 'primary.main' }}
                 message={searchTerm === '' ? 'Search something to start.' : 'Press Enter or click Search Icon once you are done'}
             />
         </Snackbar>
-        // : errorMessage === '' && searchTerm !== '' ?
-        //     <Snackbar open={true} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-        //         <SnackbarContent
-        //             sx={{ bgcolor: 'purple' }}
-        //             message={'Press Enter or click Search Icon once you are done'}
-        //         />
-        //     </Snackbar>
         : <Snackbar
             open={errorMessage === 'No result found.'}
             onClose={() => setError('')}

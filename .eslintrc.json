@@ -22,7 +22,6 @@
     "react"
   ],
   "rules": {
-    //add customize rules here
     "semi": [
       "warn",
       "always"
