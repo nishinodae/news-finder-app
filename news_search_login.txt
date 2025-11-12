@@ -1,2 +1,0 @@
-username = Safa
-password = password
