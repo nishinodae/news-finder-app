@@ -40,6 +40,6 @@ This app fetches news articles from the News API.
 
 ### Current Fake Login 
 
-Username: Safa 
-Password: password 
+- Username: Safa 
+- Password: password 
 > You may change these in src\components\Login.js
