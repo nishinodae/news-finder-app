@@ -1,6 +1,7 @@
 import { Box, Button, Card, CardContent, IconButton, Link, Stack, Typography } from '@mui/material';
 import { useNewsContext } from '../context/NewsContext';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { memo } from 'react';
 
 const MyFavPanel = () => {
     const { fav, setFav } = useNewsContext();
@@ -38,7 +39,7 @@ const MyFavPanel = () => {
     );
 };
 
-export default MyFavPanel;
+export default memo(MyFavPanel);
 
 const FavItem = ({ news }) => {
     const { removeNewsFromFav } = useNewsContext();
