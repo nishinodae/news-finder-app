@@ -2,6 +2,7 @@ import { Link, Avatar, Card, CardActions, CardContent, CardHeader, CardMedia, Gr
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNewsContext } from '../context/NewsContext';
 import placeholder from '../assets/placeholder-image.png';
+import { memo } from 'react';
 
 const NewsItem = ({ news, size }) => {
     const { fav, addNewsToFav, removeNewsFromFav } = useNewsContext();
@@ -27,7 +28,7 @@ const NewsItem = ({ news, size }) => {
                     <CardMedia
                         component='img'
                         loading='lazy'
-                        height='194'
+                        height='150px'
                         src={news.urlToImage || placeholder}
                         alt='image not available'
                         onError={(e) => {
@@ -42,7 +43,7 @@ const NewsItem = ({ news, size }) => {
                     </CardContent>
                 </Link>
                 <CardActions sx={{ mt: 'auto' }}>
-                    <IconButton color={newsInFav ? 'error' : ''} onClick={handleClick}>
+                    <IconButton aria-label='fav' color={newsInFav ? 'error' : ''} onClick={handleClick}>
                         <FavoriteIcon />
                     </IconButton>
                 </CardActions>
@@ -51,4 +52,4 @@ const NewsItem = ({ news, size }) => {
     );
 };
 
-export default NewsItem;
+export default memo(NewsItem);
