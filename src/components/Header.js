@@ -26,7 +26,7 @@ const Header = () => {
                 position: 'sticky',
                 top: 0,
                 zIndex: 1100,
-                bgcolor:'secondary.main'
+                bgcolor: 'secondary.main'
             }}
         >
             {loading && <LinearProgress />}
@@ -51,15 +51,15 @@ const Header = () => {
                     </Tooltip>
                 </Paper>
                 <Grid sx={{ display: 'flex', alignItems: 'center', }}>
-                    <Chip 
-                    label={user} 
-                    sx={{ mr: '20px', color: 'inherit', bgcolor: 'primary.main' }}
-                    avatar={<Avatar sx={{bgcolor:'primary.light'}}>{user[0]}</Avatar>}/>
+                    <Chip
+                        label={user}
+                        sx={{ mr: '20px', color: 'inherit', bgcolor: 'primary.main' }}
+                        avatar={<Avatar sx={{ bgcolor: 'primary.light' }}>{user[0]}</Avatar>} />
                     <Tooltip title='Logout'>
-                        <IconButton onClick={handleLogout} 
-                        sx={{ color: 'inherit', bgcolor: 'primary.main'}}
+                        <IconButton onClick={handleLogout}
+                            sx={{ color: 'inherit', bgcolor: 'primary.main' }}
                         >
-                            <Logout fontSize='small'/>
+                            <Logout sx={{ fontSize: '16px' }} />
                         </IconButton>
                     </Tooltip>
                 </Grid>
