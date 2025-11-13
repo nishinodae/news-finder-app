@@ -1,25 +1,30 @@
-import { Snackbar, SnackbarContent } from '@mui/material';
+import { Box, Paper, Snackbar } from '@mui/material';
 import { useNewsContext } from '../context/NewsContext';
-import { memo } from 'react';
 
-const CustomSnackbar = () => {
-    const { errorMessage, setError, searchTerm } = useNewsContext();
+const CustomSnackbar = ({ typingValue }) => {
+    const { errorMessage, setError } = useNewsContext();
 
-    return errorMessage === '' ?
-        <Snackbar open={true} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
-            <SnackbarContent
-                sx={{ bgcolor: 'primary.main' }}
-                message={searchTerm === '' ? 'Search something to start.' : 'Press Enter or click Search Icon once you are done'}
-            />
-        </Snackbar>
-        : <Snackbar
+    return <Box
+        sx={{
+            position: 'fixed',
+            bottom: '20px',
+            width: '100%',
+            textAlign: 'center',
+            pointerEvents: 'none'
+        }}>
+        {!errorMessage &&
+            <Paper sx={{ bgcolor: 'primary.main', color: '#fff', display: 'inline-block', p: '15px' }}>
+                {typingValue === '' ? 'Search something to start' : 'Press Enter or click Search Icon once you are done'}
+            </Paper>
+        }
+        <Snackbar
             open={errorMessage === 'No result found.'}
             onClose={() => setError('')}
             message={errorMessage}
             autoHideDuration={5000}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        />;
-
+        />
+    </Box>;
 };
 
-export default memo(CustomSnackbar);
+export default CustomSnackbar;
