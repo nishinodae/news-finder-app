@@ -1,17 +1,18 @@
 import { Box, Button, Grid, Snackbar, Typography } from '@mui/material';
 import { useNewsContext } from '../context/NewsContext';
 import NewsItem from './NewsItem';
+import { memo } from 'react';
 
 const DisplayResults = () => {
-    const { news, page, setPage, retrieveNews, errorMessage, setError } = useNewsContext();
+    const { searchTerm, news, page, setPage, retrieveNews, errorMessage, setError } = useNewsContext();
 
     const handleLoadMore = async () => {
         let newpage = page + 1;
         await setPage(newpage);
-        await retrieveNews(newpage);
+        await retrieveNews(newpage, searchTerm);
     };
 
-    return (<Grid size='grow' mb='10px'>
+    return (<Grid size='grow'>
         <Box
             sx={{
                 position: 'sticky',
@@ -26,10 +27,10 @@ const DisplayResults = () => {
         >
             <Typography>Results({news.length})</Typography>
         </Box>
-        <Grid container spacing={2} pb='20px'>
+        <Box display='flex' flexWrap='wrap' gap={2}>
             {news.map((newsItem, index) => <NewsItem key={index} news={newsItem} size={news.length === 1 ? 12 : { xs: 12, sm: 6, md: 4, lg: 3 }}></NewsItem>)}
-        </Grid>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }} m='20px 0'>
             <Button variant='contained' onClick={handleLoadMore}>Load more</Button>
         </Box>
         <Snackbar
@@ -42,4 +43,4 @@ const DisplayResults = () => {
     </Grid>);
 };
 
-export default DisplayResults;
+export default memo(DisplayResults);
