@@ -22,7 +22,7 @@ export function NewsContextProvider({ children }) {
     }, [fav]);
 
     //retrieve news
-    const retrieveNews = async (page) => {
+    const retrieveNews = async (page, searchTerm) => {
         if (searchTerm !== '') {
             setLoading(true);
             const apiKey = process.env.REACT_APP_API_KEY;
@@ -38,7 +38,9 @@ export function NewsContextProvider({ children }) {
 
             const response = await fetch(req);
             if (!response.ok) {
-                if (response.status === 429 || response.status === 426) { setError("You've reached maximum search allowed. Please try again later."); }
+                if (response.status === 429 || response.status === 426) {
+                    setError("You've reached maximum search allowed. Please try again later.");
+                }
                 else if (response.status === 500) {
                     setError('Server is down. Please try again later.');
                 }
@@ -50,7 +52,7 @@ export function NewsContextProvider({ children }) {
                 if (data.articles.length === 0) {
                     setError('No result found.');
                 }
-                page === 1 ? setNews(mergeList([], data.articles)) : setNews(mergeList(news, data.articles));
+                page === 1 ? setNews(mergeList([], data.articles)) : setNews(prev => mergeList(prev, data.articles));
             }
             setLoading(false);
         }
@@ -65,25 +67,20 @@ export function NewsContextProvider({ children }) {
 
     //merge list without duplicate
     const mergeList = (listA, listB) => {
-        const checked = new Set();
-        const filtered = [];
-
-        listA.forEach(a => {
-            const key = getArticleKey(a);
-            if (!checked.has(key)) {
-                checked.add(key);
-                filtered.push(a);
-            }
-        });
+        const existingKeys = new Set(listA.map(getArticleKey));
+        const newArticles = [];
 
         listB.forEach(b => {
             const key = getArticleKey(b);
-            if (!checked.has(key)) {
-                checked.add(key);
-                filtered.push(b);
+            if (!existingKeys.has(key)) {
+                existingKeys.add(key);
+                newArticles.push(b);
             }
         });
-        return filtered;
+
+        if (newArticles.length === 0) return listA;
+
+        return [...listA, ...newArticles];
     };
 
     //add news to favourites
