@@ -54,7 +54,7 @@ const FavItem = ({ news }) => {
                     </Typography>
                 </CardContent>
             </Link>
-            <IconButton color='error' onClick={handleClick}>
+            <IconButton aria-label='fav' color='error' onClick={handleClick}>
                 <FavoriteIcon />
             </IconButton>
         </Card>
