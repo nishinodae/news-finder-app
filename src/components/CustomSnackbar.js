@@ -1,5 +1,6 @@
 import { Snackbar, SnackbarContent } from '@mui/material';
 import { useNewsContext } from '../context/NewsContext';
+import { memo } from 'react';
 
 const CustomSnackbar = () => {
     const { errorMessage, setError, searchTerm } = useNewsContext();
@@ -21,4 +22,4 @@ const CustomSnackbar = () => {
 
 };
 
-export default CustomSnackbar;
+export default memo(CustomSnackbar);
