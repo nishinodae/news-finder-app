@@ -4,8 +4,8 @@ import { Logout } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useNewsContext } from '../context/NewsContext';
 
-const Header = () => {
-    const { user, setUser, searchTerm, setSearch, retrieveNews, loading, setLoading } = useNewsContext();
+const Header = ({ typingValue, setTypingValue }) => {
+    const { user, setUser, setSearch, retrieveNews, loading, setLoading } = useNewsContext();
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -17,7 +17,8 @@ const Header = () => {
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        retrieveNews(1);
+        setSearch(typingValue);
+        retrieveNews(1, typingValue);
     };
 
     return (
@@ -29,20 +30,22 @@ const Header = () => {
                 bgcolor: 'secondary.main'
             }}
         >
-            {loading && <LinearProgress />}
-            <Grid container direction='row' sx={{
-                p: '10px 20px',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-            }}>
+            {loading && <LinearProgress/>}
+            <Grid container direction='row'
+                sx={{
+                    p: '10px 20px',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                }}
+            >
                 <Typography fontFamily='Paytone One'>mydailyNEWS</Typography>
                 <Paper component='form' onSubmit={handleSearch} sx={{ p: '0 4px', display: 'flex', alignItems: 'center', width: '40%' }}>
                     <InputBase
                         id='search'
                         sx={{ ml: 1, flex: 1 }}
                         placeholder='Search News'
-                        value={searchTerm}
-                        onChange={(e) => setSearch(e.target.value)}
+                        value={typingValue}
+                        onChange={(e) => setTypingValue(e.target.value)}
                     />
                     <Tooltip title='Search'>
                         <IconButton type='submit' sx={{ p: '10px' }}>
@@ -56,9 +59,7 @@ const Header = () => {
                         sx={{ mr: '20px', color: 'inherit', bgcolor: 'primary.main' }}
                         avatar={<Avatar sx={{ bgcolor: 'primary.light' }}>{user[0]}</Avatar>} />
                     <Tooltip title='Logout'>
-                        <IconButton onClick={handleLogout}
-                            sx={{ color: 'inherit', bgcolor: 'primary.main' }}
-                        >
+                        <IconButton onClick={handleLogout} sx={{ color: 'inherit', bgcolor: 'primary.main' }}>
                             <Logout sx={{ fontSize: '16px' }} />
                         </IconButton>
                     </Tooltip>
