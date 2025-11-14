@@ -18,7 +18,7 @@ const CustomSnackbar = ({ typingValue }) => {
             </Paper>
         }
         <Snackbar
-            open={errorMessage === 'No result found.'}
+            open={errorMessage}
             onClose={() => setError('')}
             message={errorMessage}
             autoHideDuration={5000}
