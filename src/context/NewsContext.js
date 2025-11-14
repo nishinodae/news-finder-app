@@ -36,25 +36,33 @@ export function NewsContextProvider({ children }) {
 
             let req = new Request(url);
 
-            const response = await fetch(req);
-            if (!response.ok) {
-                if (response.status === 429 || response.status === 426) {
-                    setError("You've reached maximum search allowed. Please try again later.");
+            try {
+                const response = await fetch(req);
+                if (!response.ok) {
+                    if (response.status === 429 || response.status === 426) {
+                        setError("You've reached maximum search allowed. Please try again later.");
+                    }
+                    else if (response.status === 500) {
+                        setError('Server is down. Please try again later.');
+                    }
+                    else {
+                        setError('Failed to load news. Please try again later');
+                    }
+                } else {
+                    const data = await response.json();
+                    if (data.articles.length === 0) {
+                        setError('No result found.');
+                    }
+                    page === 1 ? setNews(mergeList([], data.articles)) : setNews(prev => mergeList(prev, data.articles));
                 }
-                else if (response.status === 500) {
-                    setError('Server is down. Please try again later.');
-                }
-                else {
-                    setError('Failed to load news. Please try again later');
-                }
-            } else {
-                const data = await response.json();
-                if (data.articles.length === 0) {
-                    setError('No result found.');
-                }
-                page === 1 ? setNews(mergeList([], data.articles)) : setNews(prev => mergeList(prev, data.articles));
+            }
+            catch (e) {
+                setError(`${e.message}. Check your internet connection`);
             }
             setLoading(false);
+        }
+        else {
+            setError('Please search something');
         }
     };
 
