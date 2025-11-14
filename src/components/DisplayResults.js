@@ -19,13 +19,10 @@ const DisplayResults = () => {
                 top: '64px',
                 zIndex: 1100,
                 bgcolor: 'secondary.main',
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'flex-end',
                 p: '7px 0'
             }}
         >
-            <Typography>Results({news.length})</Typography>
+            <Typography>Search Result: {searchTerm} ({news.length})</Typography>
         </Box>
         <Box display='flex' flexWrap='wrap' gap={2}>
             {news.map((newsItem, index) => <NewsItem key={index} news={newsItem} size={news.length === 1 ? 12 : { xs: 12, sm: 6, md: 4, lg: 3 }}></NewsItem>)}
