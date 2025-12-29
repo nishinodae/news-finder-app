@@ -36,7 +36,7 @@ This app fetches news articles from the News API.
     ```bash
     REACT_APP_API_KEY=<your API key>
     ```
-> ⚠️ Make sure to add `.env` to your `.gitignore` file to avoid committing your API keys.
+> ⚠️ Make sure to add `.env` to `.gitignore` file to avoid committing your API keys.
 
 ### Current Fake Login 
 
