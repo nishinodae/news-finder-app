@@ -1,4 +1,4 @@
-# News Finder App
+# News App
 
 ## Overview
 
@@ -15,16 +15,6 @@ A simple and responsive news finder application built with React, React Router, 
 
 ## Running the Demo
 
-1. Install dependencies and start the frontend:
-
-    ```bash
-    cd news-app
-    npm install
-    npm start
-    ```
-
-> The app runs on [http://localhost:3000](http://localhost:3000) by default.
-
 ### News API Setup
 
 This app fetches news articles from the News API.
@@ -36,10 +26,23 @@ This app fetches news articles from the News API.
     ```bash
     REACT_APP_API_KEY=<your API key>
     ```
-> ⚠️ Make sure to add `.env` to `.gitignore` file to avoid committing your API keys.
+> Add `.env` to `.gitignore` file to avoid committing your API keys.
+
+### Install dependencies and start the frontend
+
+    ```bash
+    cd news-app
+    npm install
+    npm start
+    ```
+
+> ..and it will run on [http://localhost:3000](http://localhost:3000).
 
 ### Current Fake Login 
 
 - Username: Safa 
 - Password: password 
 > You may change these in src\components\Login.js
+
+## Project Screenshot
+![news-app3](https://github.com/user-attachments/assets/022696f5-f0f0-4064-b89d-5b5ab2318a55)
