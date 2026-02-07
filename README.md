@@ -29,12 +29,12 @@ This app fetches news articles from the News API.
 > Add `.env` to `.gitignore` file to avoid committing your API keys.
 
 ### Install dependencies and start the frontend
-
-    ```bash
-    cd news-app
-    npm install
-    npm start
-    ```
+   
+   ```bash
+   cd news-app
+   npm install
+   npm start
+   ```
 
 > ..and it will run on [http://localhost:3000](http://localhost:3000).
 
